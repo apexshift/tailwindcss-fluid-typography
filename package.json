@@ -29,5 +29,8 @@
   },
   "bugs": {
     "url": "https://github.com/apexshift/tailwindcss-fluid-typography.git/issues"
+  },
+  "dependencies": {
+    "npm": "^11.10.0"
   }
 }
