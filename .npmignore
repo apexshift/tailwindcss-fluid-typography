@@ -1,0 +1,38 @@
+# .npmignore
+
+# Build artifacts / temp files (if you ever add a build step)
+dist/
+build/
+coverage/
+.nyc_output/
+
+# Development / editor files
+.vscode/
+.idea/
+*.log
+*.swp
+*.swo
+
+# Local config / secrets
+.env
+.env.local
+.npmrc.local
+
+# Test files & examples (unless you want to publish them)
+__tests__/
+tests/
+examples/
+demo/
+playground/
+
+# Large or unnecessary files
+*.md~          # backup markdown files
+*.DS_Store
+Thumbs.db
+
+# Keep these files OUT (examples of what NOT to ignore)
+# !README.md
+# !LICENSE
+# !CHANGELOG.md
+# !CONTRIBUTING.md
+# !index.mjs
