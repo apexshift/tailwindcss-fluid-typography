@@ -2,10 +2,10 @@
 import plugin from 'tailwindcss/plugin.js';
 
 const defaultConfig = {
-  minViewport: 375,
-  maxViewport: 1440,
-  rootFontSize: 10, // your 62.5% root → 1rem = 10px
-  prefix: 'fluid-',
+  minViewport: 375,          // px – typical mobile
+  maxViewport: 1440,         // px – typical desktop/large
+  rootFontSize: 10,          // px – matches html { font-size: 62.5%; } → 1rem = 10px
+  prefix: 'fluid-',          // class prefix: text-fluid-base, etc.
   sizes: {
     xs:    { min: 12,  max: 14 },
     sm:    { min: 14,  max: 16 },
@@ -20,19 +20,50 @@ const defaultConfig = {
 };
 
 export default plugin.withOptions(
-  // Plugin implementation
+  // 1. Plugin implementation (runs when Tailwind processes CSS)
   function (options = {}) {
     return function ({ addUtilities, theme }) {
+      // In development, log when plugin is actually executed
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('[tailwindcss-fluid-typography] Plugin is running');
+        console.log('[tailwindcss-fluid-typography] Received options:', options);
+      }
+
+      // Merge config – support both nested sizes (config file) and flat keys (CSS @plugin)
       const config = {
         ...defaultConfig,
         ...options,
-        sizes: { ...defaultConfig.sizes, ...options?.sizes },
+        sizes: { ...defaultConfig.sizes },
       };
+
+      // 1. If user provided nested sizes object (tailwind.config.js/mjs)
+      if (options.sizes && typeof options.sizes === 'object') {
+        config.sizes = { ...config.sizes, ...options.sizes };
+      }
+
+      // 2. Support flat keys from @plugin { size-base-min: 17; size-base-max: 23; ... }
+      Object.keys(options).forEach((key) => {
+        if (key.startsWith('size-')) {
+          const parts = key.split('-');
+          if (parts.length === 3) {
+            const [, sizeKey, prop] = parts; // size-base-min → base, min
+            if (prop === 'min' || prop === 'max') {
+              if (!config.sizes[sizeKey]) config.sizes[sizeKey] = {};
+              config.sizes[sizeKey][prop] = Number(options[key]);
+            }
+          }
+        }
+      });
 
       const utilities = {};
 
-      Object.entries(config.sizes).forEach(([key, { min: minPx, max: maxPx }]) => {
-        if (typeof minPx !== 'number' || typeof maxPx !== 'number') return;
+      Object.entries(config.sizes).forEach(([key, value]) => {
+        const { min: minPx, max: maxPx } = value;
+
+        // Skip invalid entries
+        if (typeof minPx !== 'number' || typeof maxPx !== 'number' || minPx >= maxPx) {
+          return;
+        }
 
         const minRem = minPx / config.rootFontSize;
         const maxRem = maxPx / config.rootFontSize;
@@ -49,11 +80,12 @@ export default plugin.withOptions(
         };
       });
 
+      // Add the generated utilities (with responsive variants)
       addUtilities(utilities, ['responsive']);
     };
   },
 
-  // Theme extension (so users can override via tailwind.config.mjs)
+  // 2. Theme extension – still useful for config-file users
   function (options = {}) {
     return {
       theme: {
