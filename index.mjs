@@ -23,6 +23,13 @@ export default plugin.withOptions(
   // 1. Plugin implementation (runs when Tailwind processes CSS)
   function (options = {}) {
     return function ({ addUtilities, theme }) {
+      console.log('[FLUID] Raw options received:', JSON.stringify(options, null, 2));
+      console.log('[FLUID] Detected flat size keys:', Object.keys(options).filter(k => k.startsWith('size-')));
+      console.log('[FLUID] Final config.rootFontSize:', config.rootFontSize);
+      console.log('[FLUID] Final config.minViewport:', config.minViewport);
+      console.log('[FLUID] Final config.maxViewport:', config.maxViewport);
+      console.log('[FLUID] Final config.sizes.base:', config.sizes.base);
+
       // In development, log when plugin is actually executed
       if (process.env.NODE_ENV !== 'production') {
         console.log('[tailwindcss-fluid-typography] Plugin is running');
