@@ -1,0 +1,33 @@
+{
+  "name": "tailwindcss-fluid-typography",
+  "version": "0.0.1",
+  "description": "Tailwind CSS plugin for automatic fluid typography using clamp()",
+  "type": "module",
+  "main": "./index.mjs",
+  "exports": {
+    ".": "./index.mjs"
+  },
+  "keywords": [
+    "tailwind",
+    "tailwindcss",
+    "tailwind-plugin",
+    "fluid-typography",
+    "clamp",
+    "responsive"
+  ],
+  "author": "Team Apex",
+  "license": "MIT",
+  "peerDependencies": {
+    "tailwindcss": "^3.0.0 || ^4.0.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apexshift/tailwindcss-fluid-typography.git"
+  },
+  "bugs": {
+    "url": "https://github.com/apexshift/tailwindcss-fluid-typography.git/issues"
+  }
+}
