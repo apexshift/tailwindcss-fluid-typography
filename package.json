@@ -1,6 +1,6 @@
 {
   "name": "@apexshift/tailwindcss-fluid-typography",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Tailwind CSS plugin for automatic fluid typography using clamp()",
   "type": "module",
   "main": "./index.mjs",
