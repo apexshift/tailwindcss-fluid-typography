@@ -71,12 +71,10 @@ export default plugin.withOptions(
 
         const viewportRange = config.maxViewport - config.minViewport;
         const sizeRange = maxRem - minRem;
-        const slope = sizeRange / viewportRange;
-        const slopeRounded = Number((slope * 100).toFixed(4));
-        const intercept = minRem - slope * config.minViewport;
-        const interceptRounded = Number(intercept.toFixed(4));
+        const slope = sizeRange / ( viewportRange * 100 );
+        const intercept = minRem - sizeRange * config.minViewport / viewportRange;
 
-        const preferred = `calc(${slopeRounded}vw + ${interceptRounded}rem)`;
+        const preferred = `calc(${slope}vw + ${intercept}rem)`;
 
         utilities[`.text-${config.prefix}${key}`] = {
           'font-size': `clamp(${minRem}rem, ${preferred}, ${maxRem}rem)`,
